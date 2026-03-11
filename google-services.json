@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "930806806431",
+    "project_id": "grakteamapp-practice",
+    "storage_bucket": "grakteamapp-practice.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930806806431:android:22514e7ffe70d65b9b6faa",
+        "android_client_info": {
+          "package_name": "com.bokinwoo.grakteamapp.practice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6LEWXJde7XNSX7GDo00i54rOpJMML5Iw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
