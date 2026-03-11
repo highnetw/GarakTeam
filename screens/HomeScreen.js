@@ -5,7 +5,7 @@ export default function HomeScreen({ onNavigate }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>GrakTeam 모임 관리</Text>
+        <Text style={styles.headerTitle}>GarakTeam</Text>
       </View>
       
       <View style={styles.content}>

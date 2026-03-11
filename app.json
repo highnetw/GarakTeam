@@ -1,8 +1,11 @@
 {
   "expo": {
-    "name": "GrakTeam 연습용",
-    "slug": "GrakTeamApp-Practice",
-    "version": "1.0.0",
+    "name": "GarakTeam",
+    "slug": "GarakTeam",
+    "updates": {
+    "enabled": false
+    },
+    "version": "0.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,7 +19,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.bokinwoo.grakteamapp.practice",
+      "package": "com.bokinwoo.garakteam",
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -34,8 +37,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "01d04ef0-9d2d-44f7-a71b-5c38d23f3d40"
+        "projectId": "88480dcb-7b22-499e-a47f-574424a9fa0e"
       }
-    }
+    },
+    "owner": "bokinwoo"
   }
 }
