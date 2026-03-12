@@ -3,7 +3,10 @@
     "name": "GarakTeam",
     "slug": "GarakTeam",
     "updates": {
-    "enabled": false
+      "enabled": false
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     },
     "version": "0.0.0",
     "orientation": "portrait",
