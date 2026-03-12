@@ -8,7 +8,7 @@ import {
   Alert,
   Image,
   ScrollView,
-  Platform,
+  FlatList,
   ActivityIndicator
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -20,10 +20,15 @@ export default function AddMeetingScreen({ onNavigate }) {
   const [restaurant, setRestaurant] = useState('');
   const [cost, setCost] = useState('');
   const [attendees, setAttendees] = useState('');
-  const [imageUri, setImageUri] = useState(null);
+  const [imageUris, setImageUris] = useState([]); // 배열로 변경
   const [uploading, setUploading] = useState(false);
 
   const pickImage = async () => {
+    if (imageUris.length >= 5) {
+      Alert.alert('알림', '이미지는 최대 5장까지 선택할 수 있습니다.');
+      return;
+    }
+
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
     if (status !== 'granted') {
@@ -38,8 +43,13 @@ export default function AddMeetingScreen({ onNavigate }) {
     });
 
     if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
+      setImageUris([...imageUris, result.assets[0].uri]);
     }
+  };
+
+  const removeImage = (index) => {
+    const newUris = imageUris.filter((_, i) => i !== index);
+    setImageUris(newUris);
   };
 
   const uploadImageToStorage = async (uri) => {
@@ -68,18 +78,18 @@ export default function AddMeetingScreen({ onNavigate }) {
     setUploading(true);
 
     try {
-      let uploadedImageUrl = '';
-      
-      if (imageUri) {
-        uploadedImageUrl = await uploadImageToStorage(imageUri);
-      }
+      // 모든 이미지 업로드
+      const uploadedUrls = await Promise.all(
+        imageUris.map(uri => uploadImageToStorage(uri))
+      );
 
       await firestore().collection('meetings').add({
         date,
         restaurant,
         cost: parseFloat(cost),
         attendees: parseInt(attendees),
-        imageUri: uploadedImageUrl,
+        imageUris: uploadedUrls, // 배열로 저장
+        imageUri: uploadedUrls[0] || '', // 기존 호환성 유지
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
 
@@ -142,12 +152,31 @@ export default function AddMeetingScreen({ onNavigate }) {
       </View>
 
       <View style={styles.formGroup}>
-        <Text style={styles.label}>더치페이 이미지</Text>
-        <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
-          <Text style={styles.imageButtonText}>갤러리에서 선택</Text>
-        </TouchableOpacity>
-        {imageUri && (
-          <Image source={{ uri: imageUri }} style={styles.previewImage} />
+        <Text style={styles.label}>
+          더치페이 이미지 ({imageUris.length}/5)
+        </Text>
+        
+        {/* 이미지 미리보기 */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.imageScrollView}>
+          {imageUris.map((uri, index) => (
+            <View key={index} style={styles.imageWrapper}>
+              <Image source={{ uri }} style={styles.previewImage} />
+              <TouchableOpacity
+                style={styles.removeButton}
+                onPress={() => removeImage(index)}
+              >
+                <Text style={styles.removeButtonText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+
+        {imageUris.length < 5 && (
+          <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
+            <Text style={styles.imageButtonText}>
+              + 이미지 추가 ({imageUris.length}/5)
+            </Text>
+          </TouchableOpacity>
         )}
       </View>
 
@@ -210,17 +239,40 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
+    marginTop: 10,
   },
   imageButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
+  imageScrollView: {
+    marginBottom: 10,
+  },
+  imageWrapper: {
+    position: 'relative',
+    marginRight: 10,
+  },
   previewImage: {
-    width: '100%',
-    height: 200,
-    marginTop: 10,
+    width: 100,
+    height: 100,
     borderRadius: 8,
+  },
+  removeButton: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: '#F44336',
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  removeButtonText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   buttonContainer: {
     flexDirection: 'row',

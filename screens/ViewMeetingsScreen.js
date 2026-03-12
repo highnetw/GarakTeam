@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   Modal,
+  ScrollView,
   SafeAreaView,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
@@ -41,6 +42,16 @@ export default function ViewMeetingsScreen({ onNavigate }) {
     setModalVisible(true);
   };
 
+  // 이미지 목록 가져오기 (기존 데이터 호환)
+  const getImageUris = (meeting) => {
+    if (meeting.imageUris && meeting.imageUris.length > 0) {
+      return meeting.imageUris;
+    } else if (meeting.imageUri) {
+      return [meeting.imageUri];
+    }
+    return [];
+  };
+
   const renderMeetingCard = ({ item }) => {
     const costPerPerson = item.attendees > 0 
       ? Math.round(item.cost / item.attendees) 
@@ -56,6 +67,11 @@ export default function ViewMeetingsScreen({ onNavigate }) {
         <Text style={styles.costPerPerson}>
           1인당: {costPerPerson.toLocaleString()}원
         </Text>
+        {getImageUris(item).length > 0 && (
+          <Text style={styles.imageCount}>
+            📷 {getImageUris(item).length}장
+          </Text>
+        )}
       </TouchableOpacity>
     );
   };
@@ -91,7 +107,7 @@ export default function ViewMeetingsScreen({ onNavigate }) {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             {selectedMeeting && (
-              <>
+              <ScrollView showsVerticalScrollIndicator={false}>
                 <Text style={styles.modalTitle}>모임 상세 정보</Text>
                 
                 <View style={styles.detailRow}>
@@ -123,12 +139,23 @@ export default function ViewMeetingsScreen({ onNavigate }) {
                   </Text>
                 </View>
 
-                {selectedMeeting.imageUri ? (
-                  <Image
-                    source={{ uri: selectedMeeting.imageUri }}
-                    style={styles.detailImage}
-                  />
-                ) : null}
+                {/* 이미지 5장 가로 스크롤 */}
+                {getImageUris(selectedMeeting).length > 0 && (
+                  <View style={styles.imageSection}>
+                    <Text style={styles.imageLabel}>
+                      더치페이 이미지 ({getImageUris(selectedMeeting).length}장)
+                    </Text>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                      {getImageUris(selectedMeeting).map((uri, index) => (
+                        <Image
+                          key={index}
+                          source={{ uri }}
+                          style={styles.detailImage}
+                        />
+                      ))}
+                    </ScrollView>
+                  </View>
+                )}
 
                 <TouchableOpacity
                   style={styles.closeButton}
@@ -136,7 +163,7 @@ export default function ViewMeetingsScreen({ onNavigate }) {
                 >
                   <Text style={styles.closeButtonText}>닫기</Text>
                 </TouchableOpacity>
-              </>
+              </ScrollView>
             )}
           </View>
         </View>
@@ -187,6 +214,11 @@ const styles = StyleSheet.create({
   costPerPerson: {
     fontSize: 14,
     color: '#666',
+  },
+  imageCount: {
+    fontSize: 12,
+    color: '#999',
+    marginTop: 5,
   },
   emptyText: {
     textAlign: 'center',
@@ -243,12 +275,21 @@ const styles = StyleSheet.create({
     color: '#333',
     flex: 1,
   },
-  detailImage: {
-    width: '100%',
-    height: 200,
-    borderRadius: 10,
+  imageSection: {
     marginTop: 15,
     marginBottom: 15,
+  },
+  imageLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
+    marginBottom: 8,
+  },
+  detailImage: {
+    width: 200,
+    height: 200,
+    borderRadius: 10,
+    marginRight: 10,
   },
   closeButton: {
     backgroundColor: '#2196F3',
