@@ -53,7 +53,7 @@ export default function App() {
       {/* 5. 배경 레이어 배치: 콘텐츠보다 뒤에 위치 */}
       <View style={styles.bgContainer} pointerEvents="none">
         <Animated.Image
-          source={require('./assets/mark_20x20_1600_transparent.png')} // 확정된 파일명
+          source={require('./assets/mark_20x20_1600_transparent_w_margin.png')}
           style={[
             styles.bgImage,
             {
