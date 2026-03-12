@@ -49,30 +49,27 @@ export default function App() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      {/* 5. 배경 레이어 배치: 콘텐츠보다 뒤에 위치 */}
-      <View style={styles.bgContainer} pointerEvents="none">
-        <Animated.Image
-          source={require('./assets/mark_20x20_1600_transparent_w_margin.png')}
-          style={[
-            styles.bgImage,
-            {
-              transform: [
-                { translateX: moveX }, // 가로 이동
-                { rotate: '-15deg' },  // 대각선 회전
-                { scale: 2 },          // 빈 공간 방지를 위한 확대
-              ],
-            },
-          ]}
-          resizeMode="repeat" // 패턴 반복
-        />
-      </View>
-
-      {/* 실제 화면 콘텐츠 */}
-      {renderScreen()}
+  <View style={{ flex: 1, backgroundColor: 'red' }}>
+    <View style={styles.bgContainer} pointerEvents="none">
+      <Animated.Image
+        source={require('./assets/mark_20x20_1600_transparent_w_margin.png')}
+        style={[
+          styles.bgImage,
+          {
+            opacity: 0.5,  // ← 0.1에서 0.5로 높여봐요
+            transform: [
+              { translateX: moveX },
+              { rotate: '-15deg' },
+              { scale: 2 },
+            ],
+          },
+        ]}
+        resizeMode="repeat"
+      />
     </View>
-  );
-}
+    {renderScreen()}
+  </View>
+);
 
 // 6. 스타일 설정
 const styles = StyleSheet.create({
