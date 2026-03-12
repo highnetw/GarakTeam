@@ -70,6 +70,7 @@ export default function App() {
     {renderScreen()}
   </View>
 );
+}
 
 // 6. 스타일 설정
 const styles = StyleSheet.create({
