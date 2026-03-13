@@ -48,7 +48,7 @@ export default function App() {
     <View style={{ flex: 1 }}>
       <View style={styles.bgContainer} pointerEvents="none">
         <Animated.Image
-          source={require('./assets/mark_20x20_1600_transparent_w_margin.png')}
+          source={require('./assets/mark_20x20_1600_transparent.png')} // 확정된 파일명
           style={[
             styles.bgImage,
             {
@@ -70,7 +70,7 @@ export default function App() {
 const styles = StyleSheet.create({
   bgContainer: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#ffffff',
+    backgroundColor: '##f0f8ff',
     zIndex: -1,
     overflow: 'hidden',
   },
