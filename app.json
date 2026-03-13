@@ -32,9 +32,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "@react-native-firebase/app"
-    ],
+    "plugins": [],
     "owner": "smartstorm",
     "extra": {
       "eas": {
