@@ -70,8 +70,8 @@ export default function App() {
 const styles = StyleSheet.create({
   bgContainer: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '##f0f8ff',
-    zIndex: -1,
+    backgroundColor: '##ffcccc',
+    // zIndex: -1,
     overflow: 'hidden',
   },
   bgImage: {
