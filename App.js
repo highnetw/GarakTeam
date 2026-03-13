@@ -45,26 +45,10 @@ export default function App() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.bgContainer} pointerEvents="none">
-        <Animated.Image
-          source={require('./assets/mark_20x20_1600_transparent.png')} // 확정된 파일명
-          style={[
-            styles.bgImage,
-            {
-              transform: [
-                { translateX: moveX },
-                { rotate: '-15deg' },
-                { scale: 2 },
-              ],
-            },
-          ]}
-          resizeMode="repeat"
-        />
-      </View>
-      {renderScreen()}
-    </View>
-  );
+  <View style={{ flex: 1, backgroundColor: '#ffcccc' }}>
+    {renderScreen()}
+  </View>
+);
 }
 
 const styles = StyleSheet.create({
