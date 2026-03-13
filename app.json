@@ -5,9 +5,6 @@
     "updates": {
       "enabled": false
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
     "version": "0.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -38,11 +35,11 @@
     "plugins": [
       "@react-native-firebase/app"
     ],
+    "owner": "smartstorm",
     "extra": {
       "eas": {
-        "projectId": "88480dcb-7b22-499e-a47f-574424a9fa0e"
+        "projectId": "bb7eb392-da4e-49e3-bac5-67f0b8142b08"
       }
-    },
-    "owner": "bokinwoo"
+    }
   }
 }
